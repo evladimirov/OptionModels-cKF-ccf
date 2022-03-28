@@ -9,38 +9,11 @@
 """
 
 
-
-function H_tilde_inv(vU, mCF_spu, mIV_eps, vS, M_all, tenors, r, svals_threshold)
-        
-    iT,_,iP = size(mIV_eps)
-    Hinv = Array{Matrix{Float64}}(undef, iP,iT)
-
-    @views for t=1:iT, τ=1:iP
-        ind = mIV_eps[t,:,τ].!==missing  
-        lnm = log.(M_all[ind])  
-        Vega = BS_vega.(vS[t], vS[t]*M_all[ind], tenors[τ], r, mIV_eps[t,ind,τ])
-
-        Γ_otm = Gamma_cov(vU, vS[t], Vega.*mIV_eps[t,ind,τ], lnm)    
-        C_otm = C_cov(vU, vS[t], Vega.*mIV_eps[t,ind,τ], lnm)  
-
-        Γ = Γ_otm./(mCF_spu[:,t,τ]*mCF_spu[:,t,τ]')
-        C = C_otm./(mCF_spu[:,t,τ]*transpose(mCF_spu[:,t,τ]))
-
-        H = 0.5*[hcat(real(Γ+ C), imag(-Γ + C));
-                hcat(imag(Γ + C), real(Γ - C))]
-
-        U,s,V = svd(H)
-        k = sum(s .> svals_threshold*size(H,1)*maximum(s))
-        H⁻ = V[:,1:k]*diagm(1 ./s[1:k])*U[:,1:k]'
-
-        Hinv[τ,t] = H⁻ 
-    end
-
-    return Hinv
-end
-
 function H_tilde_inv(u::AbstractVector, mCF_spl::AbstractArray, df::AbstractDataFrame, svals_threshold)
-        
+    """  
+        Calculate the inverse covariance matrix in option-implied CCF based on the panel of options and calculated CCF.
+    """        
+    
     @assert issubset(["time_id", "tenor", "F", "r", "m", "bsiv", "vega"], names(df)) """The input DataFrame should contain the following column names: ["time_id", "tenor", "F", "r", "m", "bsiv", "vega"]"""
 
     iN,iT,iP = size(mCF_spl)

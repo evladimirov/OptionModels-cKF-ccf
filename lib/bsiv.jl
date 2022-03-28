@@ -4,12 +4,8 @@
     Purpose: Black-Scholes option pricing routine based on the forward representation
 
     Date:    22/04/2021
-
     @author: e.vladimirov
 """
-
-using SpecialFunctions
-
 
 @inline Φ(x) = (1 + erf(x/sqrt(2)))/2
 @inline Φ⁻(x) = sqrt(2)*erfinv(2*x-1)

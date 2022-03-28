@@ -4,12 +4,8 @@
     Purpose: ODE calculation routine for AJD class models
 
     Date:    28/01/2021
-
     @author: e.vladimirov
 """
-
-using DifferentialEquations
-using LinearAlgebra
 
 
 function affineODE(u::Real, T, K0, K1, H0, H1, L0, L1, JT::Function)

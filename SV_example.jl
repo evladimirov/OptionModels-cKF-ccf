@@ -3,7 +3,6 @@
 
     Date:    22/03/2022
     @author: e.vladimirov
-
 """
 
 using SpecialFunctions, Distributions, Optim
@@ -50,7 +49,7 @@ start = [0.5, 5.0,  0.012, -0.9,  0.02];
 
 # We use box-constrained optimization
 opt = Optim.Options(x_abstol = 1e-8, x_reltol = 1e-8, f_abstol = 1e-8, f_reltol = 1e-8, g_tol = 1e-8, 
-                    outer_iterations = 30, iterations = 50, show_trace=true)
+                    outer_iterations = 20, iterations = 50, show_trace=false)
 
 #           σ,   κ,    vbar,     ρ,     σₑ
 lb = [0.0001,    0,  0.0001,    -1, 0.0001];
@@ -58,7 +57,14 @@ ub = [1.5,      38,     0.1,     0,      1];
 
 
 res = optimize(f, lb, ub, start,  Fminbox(BFGS()), opt)
-print("Estimated parameters of the SV model: ", round.(res.minimizer, digits=4))
+θ = round.(res.minimizer, digits=4)
+println("Estimated parameters of the SV model:
+        σ = ", θ[1],"
+        κ = ", θ[2],"
+        ̄v = ", θ[3],"
+        ρ = ", θ[4])
+
+# True parameters used in estimation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, σₑ = 0.02
 
 ll, x = SV_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv)
 plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="vₜ"); ylims!(0.0, 0.25)

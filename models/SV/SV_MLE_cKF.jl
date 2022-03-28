@@ -4,13 +4,9 @@
     Purpose: SV MLE estimation via collapsed KF.
 
     Date:    22/11/2021
-
     @author: e.vladimirov
 """
 
-
-#include(string(pwd(),"/lib/KF.jl"))
-#include(string(pwd(),"/lib/affineODE.jl"))
 
 function SV_ode_analytical(u::Real, dt::Real, params)
     " Analytical solution, following J.Pan (2002)"

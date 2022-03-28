@@ -7,7 +7,6 @@
              x[t+1] = c[t] + T[t] x[t] + η[t+1],    E[η[t]η[t]'] = Q(x,t)   
 
     Date:    04/06/2021
-
     @author: e.vladimirov
 """
 

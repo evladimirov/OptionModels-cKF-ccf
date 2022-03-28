@@ -51,43 +51,11 @@ end
 
 
 
-
-function option_implied_CCF_splined(u::AbstractVector, F, IV, M_all, tenors)
-    """ 
-        Calculate option-implied CCF based on panel of options with interpolation-extrapolation splining scheme.
-
-        Note that the spline is applied to the IV rather than OTM, thus IV is requirement for this function. 
-        Interpolated OTM prices are then obtained from the interpolated IV
-    """
-    iT,_,iP = size(IV)
-    iN = length(u)
-
-    mCF_u = Array{ComplexF64}(undef, iN,iT,iP)
-    lnCF_u = Array{ComplexF64}(undef, iN,iT,iP)
-
-    @views for τ=1:iP, t=1:iT
-        #println("t=",t, "τ=", τ)
-        ind = IV[t,:,τ].!==missing
-
-        # extrapolate out of `observable` range
-        lnm = log.(M_all[ind])
-        spm = log.(collect(M_all[1]:0.0001:M_all[end]))
-
-        spOTM = interpolate_extrapolate_IV(IV[t,ind,τ], tenors[τ], F[t], lnm, spm)
-
-        mCF_u[:,t,τ] = option_implied_CCF(u, F[t], spOTM, spm, r, tenors[τ])
-        lnCF_u[:,t,τ] = LogCF(mCF_u[:,t,τ])
-    end
-
-    return mCF_u, lnCF_u
-end
-
-
 function option_implied_CCF_splined(u::AbstractVector, df::AbstractDataFrame, M_all)
     """ 
-        Calculate option-implied CCF based on panel of options with interpolation-extrapolation splining scheme.
+        Calculate option-implied CCF based on the panel of options with interpolation-extrapolation splining scheme.
 
-        Note that the spline is applied to the IV rather than OTM, thus IV is requirement for this function. 
+        Note that the B-spline is applied to the IV rather than OTM, thus IV is requirement for this function. 
         Interpolated OTM prices are then obtained from the interpolated IV
     """
 
@@ -105,7 +73,6 @@ function option_implied_CCF_splined(u::AbstractVector, df::AbstractDataFrame, M_
     lnCF_u = Array{ComplexF64}(undef, iN,iT,iP)
 
     @views for t=1:iT, τ=1:iP
-        #print("t=", t)
         df_day = df[(df.time_id .== time_ids[t]).& (df.tenor .== tenors[τ]), :]
         F = df.F[1]
         r = df.r[1]
@@ -127,7 +94,7 @@ end
 function interpolate_extrapolate_IV(IV::AbstractVector, τ::Real, F::Real, m, spm, r)
     """
         Interpolation-extrapolation scheme applied to Total Variance
-            For interpolation, 1d B-spline is used from Dierckx.jl package, which is a Julia wrapper for the dierckx Fortran library
+            For interpolation, 1d B-spline is used from Dierckx.jl package, which is a Julia wrapper for the Dierckx Fortran library
             Extrapolation of TV is linear in log-moneyness (see Appendix of the paper for more details)
     """
 
