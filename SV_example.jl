@@ -1,5 +1,12 @@
 """
-    This code demonstrates the use of the linear state space representation for the SV model based on simulated data
+    This code demonstrates the use of the linear state space representation for the SV model based on the simulated data
+
+    The following stochastic volatility model of Heston (1993) is considered:
+            
+        dyₜ = -0.5 vₜ dt + √vₜ dWₜ¹
+        dvₜ = κ(̄v + vₜ)dt + σ √vₜ (ρ dWₜ¹ + √(1-ρ²) dWₜ²) 
+    
+    The parameters used in the simulated data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7
 
     Date:    22/03/2022
     @author: e.vladimirov
@@ -23,6 +30,7 @@ df_sv = CSV.read("models/SV/SV_simulated.csv", DataFrame)
 time_ids = sort(unique(df_sv.time_id))
 tenors = unique(df_sv.tenor)
 
+# Collect time-series of the state vector
 F = []; vol =[];
 @views for day in time_ids
     push!(F, df_sv[df_sv.time_id .== day, :F][1])
@@ -64,7 +72,7 @@ println("Estimated parameters of the SV model:
         ̄v = ", θ[3],"
         ρ = ", θ[4])
 
-# True parameters used in estimation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, σₑ = 0.02
+# True parameters used in simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, σₑ = 0.02
 
 ll, x = SV_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv)
 plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="vₜ"); ylims!(0.0, 0.25)

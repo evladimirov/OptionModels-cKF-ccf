@@ -17,7 +17,13 @@ function H_tilde_inv(u::AbstractVector, mCF_spl::AbstractArray, df::AbstractData
     @assert issubset(["time_id", "tenor", "F", "r", "m", "bsiv", "vega"], names(df)) """The input DataFrame should contain the following column names: ["time_id", "tenor", "F", "r", "m", "bsiv", "vega"]"""
 
     iN,iT,iP = size(mCF_spl)
+
+    time_ids = sort(unique(df.time_id))
+    tenors = unique(df.tenor)
+
     @assert iN == length(u) "The argument vector should be the same as for the calculation of CCF matrix"
+    @assert iT == length(time_ids) "The time dimension should be the same as for the calculation of CCF matrix"
+    @assert iP == length(tenors) "The number of tenors should be the same as for the calculation of CCF matrix"
 
     Hinv = Array{Matrix{Float64}}(undef, iP,iT)
     @views for t=1:iT, τ=1:iP
