@@ -9,7 +9,8 @@
 
 
 function SVCDEJ_ode(u::Real, dt, params)
-
+    " Numerical ODE solver for SVCDEJ model "
+    
     σ, κ, vbar, ρ, δ, p⁻, η⁺, η⁻, μᵥ = params
 
     μ = (1-p⁻)/(1 - η⁺) + p⁻/(1 + η⁻) - 1

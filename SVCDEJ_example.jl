@@ -14,6 +14,7 @@
     The parameters used in the simulated data are 
     σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 80.0, p⁻=0.7, η⁺ = 0.01, η⁻ = 0.05, μᵥ = 0.04 
 
+    
     Date:    31/03/2022
     @author: e.vladimirov
 """
@@ -86,7 +87,8 @@ println("Estimated parameters of the SV model:
         η⁻ = ", θ[7],"
         μᵥ = ", θ[8])
 
-# True parameters used in simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 40.0, μⱼ = -0.06, σⱼ = 0.02, σₑ = 0.02
+# True parameters used in simulation are 
+# σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 80.0, p⁻=0.7, η⁺ = 0.01, η⁻ = 0.05, μᵥ = 0.04 
 
 ll, x = SVCDEJ_MLE_cKF([θ[1:5];p⁻;θ[6:9]], lnCF_spl, vU, tenors, dt, Hinv)
 plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="vₜ"); ylims!(0.0, 0.3)
