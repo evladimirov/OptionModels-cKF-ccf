@@ -14,8 +14,8 @@ function SVCDEJ_ode(u::Real, dt, params)
 
     μ = (1-p⁻)/(1 - η⁺) + p⁻/(1 + η⁻) - 1
 
-    K0 = [r; 
-         κ*vbar]
+    K0 = [0; 
+        κ*vbar]
     K1 = [0     -0.5-μ*δ;
           0         -κ]
     H0 = [0 0;

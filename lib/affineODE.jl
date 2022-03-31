@@ -8,7 +8,7 @@
 """
 
 
-function affineODE(u::Real, T, K0, K1, H0, H1, L0, L1, JT::Function)
+function affineODE(u, T, K0, K1, H0, H1, L0, L1, JT::Function)
     """
     ODE solver for affine model, following Duffie, Pan, Singelton (2002)
 
