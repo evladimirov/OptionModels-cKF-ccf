@@ -1,7 +1,7 @@
 """
     This code demonstrates the use of the linear state space representation for the SVJ model based on simulated data
 
-    The following stochastic volatility model with jumps of Pan (2002) model is considered:
+    The following stochastic volatility model with jumps of Pan (2002) is considered:
             
         dyₜ = (-0.5 vₜ - μλₜ)dt + √vₜ dWₜ¹ + Zₜ dNₜ
         dvₜ = κ(̄v + vₜ)dt + σ √vₜ (ρ dWₜ¹ + √(1-ρ²) dWₜ²) 
