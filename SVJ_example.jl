@@ -10,7 +10,7 @@
 
     The parameters used in the simulated data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 40.0, μⱼ = -0.06, σⱼ = 0.02
 
-    Date:    22/03/2022
+    Date:    30/03/2022
     @author: e.vladimirov
 """
 
