@@ -1,6 +1,6 @@
 # OptionModels-cKF-ccf
 
-This repository illustrates and provides code the estimation procedure of the paper **Estimating Option Pricing Models Using a Characteristic Function-Based Linear State Space Representation** written by Peter Boswijk, Roger Laeven and Evgenii Vladimirov. 
+This repository illustrates and provides code for the estimation procedure of the paper **Estimating Option Pricing Models Using a Characteristic Function-Based Linear State Space Representation** written by Peter Boswijk, Roger Laeven and Evgenii Vladimirov. 
 
 
 # Simulated data
