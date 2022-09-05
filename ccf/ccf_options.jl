@@ -22,7 +22,7 @@ function option_implied_CCF(u::Real, F::Real, OTM, m, r, τ)
             r       risk-free rate 
             τ       number, time-to-maturity
         Return:
-            uCF     upper Darboux sum for CF
+            CF     left Darboux sum for CF
     """
     dm = diff(m)
     @views CF = exp(-r*τ) - 1/F*(im*u + u^2)*DarbouxSum(u,m,OTM,dm)
@@ -111,7 +111,6 @@ function interpolate_extrapolate_IV(IV::AbstractVector, τ::Real, F::Real, m, sp
     evTVar = spTVar.(spm_interm)
     spCP = BSprice.(F, spK, τ, r, sqrt.(max.(evTVar/τ,0)))
     @views spOTM_interm = vcat(last.(spCP[spm_interm.<=0]), first.(spCP[spm_interm.>0]))
-    #spOTM_interm = BSprice.(F, spK, τ, r, sqrt.(max.(evTVar/τ,0)), spm_interm.<=0)
 
     # extrapolation
     tvₗ = spTVar(mₗ); tvᵣ = spTVar(mᵣ);
