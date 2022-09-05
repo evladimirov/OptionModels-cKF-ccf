@@ -80,5 +80,5 @@ println("Estimated parameters of the SV model:
 # True parameters used in the simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 40.0, μⱼ = -0.06, σⱼ = 0.02, σₑ = 0.02
 
 ll, x = SVJ_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv)
-plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="√vₜ"); ylims!(0.0, 0.25)
+plot(sqrt.(x), label =L"\sqrt{\hat{x}_{t|t{-}1}}", size=(600,300), dpi=600); plot!(vol, label=L"\sqrt{v_t}"); ylims!(0.0, 0.25)
 savefig("models/SVJ/svj_filter_example.png")
