@@ -1,20 +1,20 @@
 # OptionModels-cKF-ccf
 
-This repository illustrates and provides code for the estimation procedure of the paper **Estimating Option Pricing Models Using a Characteristic Function-Based Linear State Space Representation** written by Peter Boswijk, Roger Laeven and Evgenii Vladimirov. 
+This repository illustrates and provides code for the estimation procedure developed in the paper **Estimating Option Pricing Models Using a Characteristic Function-Based Linear State Space Representation** written by Peter Boswijk, Roger Laeven and Evgenii Vladimirov. 
 
 
 # Simulated data
 
-The illustration is based on the simulated data from three popular option pricing models: SV, SVJ and SVCDEJ. The simulated data are stored as csv files in `models`. The state vectors are simulated using the Euler discretization and the option prices are computed using the COS method. The option prices are then distorted with additive errors. For all simulation details see Section 4 of the paper. 
+The illustration is based on simulated data from three popular option pricing models: SV, SVJ and SVCDEJ. The simulated data are stored as csv files in `models`. The state vectors are simulated using an Euler discretization and the option prices are computed using the COS method. The option prices are then distorted with additive errors. For all simulation details see Section 4 of the paper. 
 
 
 # Code
 
-The code is written in `Julia` version 1.7. The dependency packages are listed `Project.toml`. 
+The code is written in `Julia` version 1.7. The dependency packages are listed in `Project.toml`. 
 
 For each of the models the example code: 
 * reads the simulated options data
-* calculates option-implied CCF and corresponding covariance matrices
+* calculates the option-implied CCF and corresponding covariance matrices
 * estimates the model parameters based on the QML and collapsed KF
 * plots the filtered volatility next to the true process and saves the figures
 
