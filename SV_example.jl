@@ -6,7 +6,7 @@
         dyₜ = -0.5 vₜ dt + √vₜ dWₜ¹
         dvₜ = κ(̄v + vₜ)dt + σ √vₜ (ρ dWₜ¹ + √(1-ρ²) dWₜ²) 
     
-    The parameters used to simulated the data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7
+    The parameters used to simulate the data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7
 
     Date:    22/03/2022
     @author: e.vladimirov
@@ -15,7 +15,7 @@
 using SpecialFunctions, Distributions, Optim
 using LinearAlgebra, Dierckx
 using CSV, DataFrames
-using Plots
+using Plots, LaTeXStrings
 
 include("lib/bsiv.jl")
 include("lib/affineODE.jl")
@@ -75,6 +75,6 @@ println("Estimated parameters of the SV model:
 # True parameters used in the simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, σₑ = 0.02
 
 ll, x = SV_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv)
-plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="√vₜ"); ylims!(0.0, 0.25)
+plot(sqrt.(x), label =L"\sqrt{\hat{x}_{t{+}1|t}}", size=(600,300), dpi=600); plot!(vol, label=L"\sqrt{v_t}"); ylims!(0.0, 0.25)
 savefig("models/SV/sv_filter_example.png")
 
