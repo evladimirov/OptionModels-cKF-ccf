@@ -23,7 +23,7 @@ using SpecialFunctions, Distributions, Optim
 using DifferentialEquations
 using LinearAlgebra, Dierckx
 using CSV, DataFrames
-using Plots
+using Plots, LaTeXStrings
 
 include("lib/bsiv.jl")
 include("lib/affineODE.jl")
@@ -91,7 +91,7 @@ println("Estimated parameters of the SV model:
 # σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 80.0, p⁻=0.7, η⁺ = 0.01, η⁻ = 0.05, μᵥ = 0.04 
 
 ll, x = SVCDEJ_MLE_cKF([θ[1:5];p⁻;θ[6:9]], lnCF_spl, vU, tenors, dt, Hinv)
-plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="√vₜ"); ylims!(0.0, 0.3)
+plot(sqrt.(x), label =L"\sqrt{\hat{x}_{t|t{-}1}}", size=(600,300), dpi=600); plot!(vol, label=L"\sqrt{v_t}"); ylims!(0.0, 0.3)
 savefig("models/SVCDEJ/svcdej_filter_example.png")
 
 
