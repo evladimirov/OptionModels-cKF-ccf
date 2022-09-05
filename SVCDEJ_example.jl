@@ -1,5 +1,5 @@
 """
-    This code demonstrates the use of the linear state space representation for the SVJ model based on simulated data
+    This code demonstrates the use of the linear state space representation for the SVCDEJ model based on simulated data
 
     The following stochastic volatility model with double-exponential jumps in returns and co-jumps in volatility is considered:
             
@@ -11,7 +11,7 @@
 
         This model is used as the main model presented in the paper. See Section 4 of the paper for more details
 
-    The parameters used in the simulated data are 
+    The parameters used to simulate the data are 
     σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 80.0, p⁻=0.7, η⁺ = 0.01, η⁻ = 0.05, μᵥ = 0.04 
 
     
@@ -87,11 +87,11 @@ println("Estimated parameters of the SV model:
         η⁻ = ", θ[7],"
         μᵥ = ", θ[8])
 
-# True parameters used in simulation are 
+# True parameters used in the simulation are 
 # σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 80.0, p⁻=0.7, η⁺ = 0.01, η⁻ = 0.05, μᵥ = 0.04 
 
 ll, x = SVCDEJ_MLE_cKF([θ[1:5];p⁻;θ[6:9]], lnCF_spl, vU, tenors, dt, Hinv)
-plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="vₜ"); ylims!(0.0, 0.3)
+plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="√vₜ"); ylims!(0.0, 0.3)
 savefig("models/SVCDEJ/svcdej_filter_example.png")
 
 
