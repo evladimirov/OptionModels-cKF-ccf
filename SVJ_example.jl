@@ -8,7 +8,7 @@
 
         with λₜ = δvₜ , Z ∼ N(μⱼ, σⱼ²) and μ = E[exp(Z) -1] = exp(μⱼ + 0.5 σⱼ²)-1  
 
-    The parameters used in the simulated data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 40.0, μⱼ = -0.06, σⱼ = 0.02
+    The parameters used to simulate the data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 40.0, μⱼ = -0.06, σⱼ = 0.02
 
     Date:    30/03/2022
     @author: e.vladimirov
@@ -77,8 +77,8 @@ println("Estimated parameters of the SV model:
         μⱼ = ", θ[6],"
         σⱼ = ", θ[7])
 
-# True parameters used in simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 40.0, μⱼ = -0.06, σⱼ = 0.02, σₑ = 0.02
+# True parameters used in the simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 40.0, μⱼ = -0.06, σⱼ = 0.02, σₑ = 0.02
 
 ll, x = SVJ_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv)
-plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="vₜ"); ylims!(0.0, 0.25)
+plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="√vₜ"); ylims!(0.0, 0.25)
 savefig("models/SVJ/svj_filter_example.png")
