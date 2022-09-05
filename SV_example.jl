@@ -6,7 +6,7 @@
         dyₜ = -0.5 vₜ dt + √vₜ dWₜ¹
         dvₜ = κ(̄v + vₜ)dt + σ √vₜ (ρ dWₜ¹ + √(1-ρ²) dWₜ²) 
     
-    The parameters used in the simulated data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7
+    The parameters used to simulated the data are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7
 
     Date:    22/03/2022
     @author: e.vladimirov
@@ -72,9 +72,9 @@ println("Estimated parameters of the SV model:
         ̄v = ", θ[3],"
         ρ = ", θ[4])
 
-# True parameters used in simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, σₑ = 0.02
+# True parameters used in the simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, σₑ = 0.02
 
 ll, x = SV_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv)
-plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="vₜ"); ylims!(0.0, 0.25)
+plot(sqrt.(x), label ="√xₜ", size=(600,300), dpi=600); plot!(vol, label="√vₜ"); ylims!(0.0, 0.25)
 savefig("models/SV/sv_filter_example.png")
 
