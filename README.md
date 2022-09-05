@@ -12,7 +12,7 @@ The illustration is based on simulated data from three popular option pricing mo
 
 The code is written in `Julia` version 1.7. The dependency packages are listed in `Project.toml`. 
 
-For each of the three models, the example code in `*_example.jl': 
+For each of the three models, the example code in `*_example.jl`: 
 * reads the simulated options data
 * calculates the option-implied CCF and corresponding covariance matrices
 * estimates the model parameters based on the QML and collapsed KF
