@@ -5,7 +5,7 @@ This repository illustrates and provides code for the estimation procedure devel
 
 # Simulated data
 
-The illustration is based on simulated data from three option pricing models: SV (Heston, 1993), SVJ (Pan, 2002) and SVCDEJ (Section 4 of the paper). The simulated data are stored as csv files in `models`. The state vectors are simulated using an Euler discretization and the option prices are computed using the COS method. The option prices are then distorted with additive errors. For further details concering the simulations, see Section 4 of the paper. 
+The illustration is based on simulated data from three option pricing models: SV (Heston, 1993), SVJ (Pan, 2002) and SVCDEJ (Section 4 of the paper). The simulated data are stored as csv files in `models`. The state vectors are simulated using an Euler discretization and the option prices are computed using the COS method. The option prices are then distorted with additive errors. For further details concerning the simulations, see Section 4 of the paper. 
 
 
 # Code
