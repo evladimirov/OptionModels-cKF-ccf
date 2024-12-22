@@ -47,11 +47,11 @@ svals_threshold = 1e-7          # parameter for singular values threshold
 dt = 1/250                      # time difference between two time points, set to 1/250 in simulation
 
 mCF_spl, lnCF_spl = option_implied_CCF_splined(vU, df_sv, M_all)
-Hinv = H_tilde_inv(vU, mCF_spl, df_sv, svals_threshold)
+Hinv, k_total = H_tilde_inv(vU, mCF_spl, df_sv, svals_threshold)
 
 
 #%% estimation
-f(theta) = -SV_MLE_cKF(theta, lnCF_spl, vU, tenors, dt, Hinv)[1]
+f(theta) = -SV_MLE_cKF(theta, lnCF_spl, vU, tenors, dt, Hinv, k_total)[1]
 
 start = [0.5, 5.0,  0.012, -0.9,  0.02];
 
@@ -74,7 +74,7 @@ println("Estimated parameters of the SV model:
 
 # True parameters used in the simulation are σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, σₑ = 0.02
 
-ll, x = SV_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv)
+ll, x = SV_MLE_cKF(res.minimizer, lnCF_spl, vU, tenors, dt, Hinv, k_total)
 plot(sqrt.(x), label =L"\sqrt{\hat{x}_{t|t{-}1}}", size=(600,300), dpi=600); plot!(vol, label=L"\sqrt{v_t}"); ylims!(0.0, 0.25)
 savefig("models/SV/sv_filter_example.png")
 

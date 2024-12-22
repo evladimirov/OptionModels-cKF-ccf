@@ -51,18 +51,18 @@ plot([log.(F), vol], layout = (2,1), label = ["log F" "vol"])
 # Set some parameters 
 M_all = collect(0.1:0.01:2.0);  # range over which the interpolation-extrapolation scheme is applied
 vU = collect(1:20);             # vector of arguments for the CCF  
-svals_threshold = 1e-7          # parameter for singular values threshold
+svals_threshold = 1e-5          # parameter for singular values threshold
 dt = 1/250                      # time difference between two time points, set to 1/250 in simulation
 
 mCF_spl, lnCF_spl = option_implied_CCF_splined(vU, df_svcdej, M_all)
-Hinv = H_tilde_inv(vU, mCF_spl, df_svcdej, svals_threshold)
+Hinv, k_total = H_tilde_inv(vU, mCF_spl, df_svcdej, svals_threshold)
 
 
 #%% estimation
 # Here we fix the probability of negative jumps to the true value, otherwise there are identification issues arise
 p⁻ = 0.7
 
-f(theta) = -SVCDEJ_MLE_cKF([theta[1:5];p⁻;theta[6:9]], lnCF_spl, vU, tenors, dt, Hinv)[1]
+f(theta) = -SVCDEJ_MLE_cKF([theta[1:5];p⁻;theta[6:9]], lnCF_spl, vU, tenors, dt, Hinv, k_total)[1]
 
 start = [0.5, 5.0,  0.012, -0.9, 50, 0.015,  0.04,  0.03 , 0.02];
 
@@ -90,7 +90,7 @@ println("Estimated parameters of the SV model:
 # True parameters used in the simulation are 
 # σ = 0.25, κ = 5.0, ̄v = 0.015, ρ = -0.7, δ = 80.0, p⁻=0.7, η⁺ = 0.01, η⁻ = 0.05, μᵥ = 0.04 
 
-ll, x = SVCDEJ_MLE_cKF([θ[1:5];p⁻;θ[6:9]], lnCF_spl, vU, tenors, dt, Hinv)
+ll, x = SVCDEJ_MLE_cKF([θ[1:5];p⁻;θ[6:9]], lnCF_spl, vU, tenors, dt, Hinv, k_total)
 plot(sqrt.(x), label =L"\sqrt{\hat{x}_{t|t{-}1}}", size=(600,300), dpi=600); plot!(vol, label=L"\sqrt{v_t}"); ylims!(0.0, 0.3)
 savefig("models/SVCDEJ/svcdej_filter_example.png")
 

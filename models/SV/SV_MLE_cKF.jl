@@ -25,7 +25,7 @@ function SV_ode_analytical(u::Real, dt::Real, params)
 end
 
 
-function SV_MLE_cKF(theta, lnCF, vU, tenors, Δt, Hinv)
+function SV_MLE_cKF(theta, lnCF, vU, tenors, Δt, Hinv, k_total)
 
     iN, iT, iP = size(lnCF)
     σ, κ, vbar, ρ, σₑ = theta
@@ -92,7 +92,7 @@ function SV_MLE_cKF(theta, lnCF, vU, tenors, Δt, Hinv)
         Ftmp = F[t]
         ll = ll - 0.5*(log(Ftmp) + v[t]^2/Ftmp) 
         ll = ll - 0.5*sum((e[(τ-1)*2*iN+1:τ*2*iN,t]'*Hinv[τ,t]*e[(τ-1)*2*iN+1:τ*2*iN,t])/(σₑ^2) for τ=1:iP) 
-        ll = ll + 0.5*log(Hᴸ[t]) - iP*iN*log(σₑ)
+        ll = ll + 0.5*log(Hᴸ[t]) - k_total[t]*log(σₑ)
     end
 
     return ll, x

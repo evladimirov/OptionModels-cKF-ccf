@@ -64,7 +64,7 @@ function KF(y, d::AbstractVector, Z, c::AbstractVector, T::Number, H::AbstractVe
         Ftmp_inv = 1/Ftmp
         F[t] = Ftmp
 
-        x_tt[t] = max(α[t] + P*Z'*Ftmp_inv*v[t], 0)
+        x_tt[t] = max(x[t] + P*Z'*Ftmp_inv*v[t], 0)
         x[t+1] = c[t] + T*x_tt[t]
 
         P_tt = P - P*Z'*Ftmp_inv*Z*P

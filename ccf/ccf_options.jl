@@ -74,8 +74,8 @@ function option_implied_CCF_splined(u::AbstractVector, df::AbstractDataFrame, M_
 
     @views for t=1:iT, τ=1:iP
         df_day = df[(df.time_id .== time_ids[t]).& (df.tenor .== tenors[τ]), :]
-        F = df.F[1]
-        r = df.r[1]
+        F = df_day.F[1]
+        r = df_day.r[1]
 
         # extrapolate out of `observable` range
         lnm = log.(df_day.m)

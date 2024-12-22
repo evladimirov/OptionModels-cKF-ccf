@@ -26,32 +26,41 @@ function H_tilde_inv(u::AbstractVector, mCF_spl::AbstractArray, df::AbstractData
     @assert iP == length(tenors) "The number of tenors should be the same as for the calculation of CCF matrix"
 
     Hinv = Array{Matrix{Float64}}(undef, iP,iT)
-    @views for t=1:iT, τ=1:iP
+    k_total = Array{Int64}(undef, iT)
 
-        df_day = df[(df.time_id .== time_ids[t]).& (df.tenor .== tenors[τ]), :]
+    @views for t=1:iT
+        k_t = 0
+        for τ=1:iP
 
-        lnm = log.(df_day.m)  
-        Vega = df_day.vega
-        IV = df_day.bsiv
-        F = df.F[1]
+            df_day = df[(df.time_id .== time_ids[t]).& (df.tenor .== tenors[τ]), :]
 
-        Γ_otm = Gamma_cov(u, F, Vega.*IV, lnm)    
-        C_otm = C_cov(u, F, Vega.*IV, lnm)  
+            lnm = log.(df_day.m)  
+            Vega = df_day.vega
+            IV = df_day.bsiv
+            F = df_day.F[1]
 
-        Γ = Γ_otm./(mCF_spl[:,t,τ]*mCF_spl[:,t,τ]')
-        C = C_otm./(mCF_spl[:,t,τ]*transpose(mCF_spl[:,t,τ]))
+            Γ_otm = Gamma_cov(u, F, Vega.*IV, lnm)    
+            C_otm = C_cov(u, F, Vega.*IV, lnm)  
 
-        H = 0.5*[hcat(real(Γ+ C), imag(-Γ + C));
-                hcat(imag(Γ + C), real(Γ - C))]
+            Γ = Γ_otm./(mCF_spl[:,t,τ]*mCF_spl[:,t,τ]')
+            C = C_otm./(mCF_spl[:,t,τ]*transpose(mCF_spl[:,t,τ]))
 
-        U,s,V = svd(H)
-        k = sum(s .> svals_threshold*size(H,1)*maximum(s))
-        H⁻ = V[:,1:k]*diagm(1 ./s[1:k])*U[:,1:k]'
+            H = 0.5*[hcat(real(Γ+ C), imag(-Γ + C));
+                    hcat(imag(Γ + C), real(Γ - C))]
 
-        Hinv[τ,t] = H⁻ 
+            H = Symmetric( 0.5*(H + H') )
+
+            U,s,V = svd(H)
+            k = sum(s .> svals_threshold*size(H,1)*maximum(s))
+            H⁻ = V[:,1:k]*diagm(1 ./s[1:k])*U[:,1:k]'
+
+            Hinv[τ,t] = H⁻ 
+            k_t += k
+        end
+        k_total[t] = k_t
     end
 
-    return Hinv
+    return Hinv, k_total
 end
 
 function Gamma_cov(u₁::Real, u₂::Real, F₀::Real, σ_m, m)
